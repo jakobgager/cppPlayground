@@ -1,8 +1,10 @@
-cmake_minimum_required(VERSION 3.0.0)
-project(cppPlayground VERSION 0.1.0)
+# CMakeLists.txt
 
-add_executable(cppPlayground src/main.cpp)
+cmake_minimum_required(VERSION 3.4)
 
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
+project(cppPlayground VERSION 1.0
+                      DESCRIPTION "Very nice project")
+
+include_directories( ./lib )
+
+add_executable(cppPlayground src/main.cpp lib/inih/ini.c lib/inih/cpp/INIReader.cpp)

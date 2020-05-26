@@ -1,18 +1,67 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "type": "shell",
-            "label": "g++ build active file",
-            "command": "/usr/bin/g++",
+	"version": "2.0.0",
+	"tasks": [
+        { "type": "shell",
+            "label": "g++.exe build active file",
+            "command": "D:/ProgramData/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/g++.exe",
             "args": [
                 "-g",
-                "${file}",
+                "${workspaceFolder}/src/${fileBasename}",
+                "${workspaceFolder}/lib/inih/ini.c",
+                "${workspaceFolder}/lib/inih/cpp/INIReader.cpp",
                 "-o",
-                "${workspaceFolder}/bin/playground"
+                "${workspaceFolder}/bin\\${fileBasenameNoExtension}.exe",
+                "-Wall",
+                "-I${workspaceFolder}/lib",
             ],
             "options": {
-                "cwd": "/usr/bin"
+                "cwd": "D:/ProgramData/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+        },
+        { "label": "cmake",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "${workspaceFolder}",
+                "-G",
+                "MinGW Makefiles",
+                "-DCMAKE_BUILD_TYPE=Debug",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+        },
+        { "label": "make",
+            "type": "shell",
+            "command": "mingw32-make.exe",
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "dependsOn":["cmake"]
+        },
+        { "label": "clean",
+            "type": "shell",
+            "command": "rm -r *",
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+        },
+        { "label": "build (with cmake/make)",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/build"
             },
             "problemMatcher": [
                 "$gcc"
@@ -20,7 +69,8 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+            },
+            "dependsOn": ["make"]
         }
     ]
 }
