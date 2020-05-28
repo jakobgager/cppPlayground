@@ -7,12 +7,14 @@
             "args": [
                 "-g",
                 "${workspaceFolder}/src/${fileBasename}",
+                "${workspaceFolder}/src/inihandler.cpp",
                 "${workspaceFolder}/lib/inih/ini.c",
                 "${workspaceFolder}/lib/inih/cpp/INIReader.cpp",
                 "-o",
                 "${workspaceFolder}/bin\\${fileBasenameNoExtension}.exe",
                 "-Wall",
                 "-I${workspaceFolder}/lib",
+                "-I${workspaceFolder}/src",
             ],
             "options": {
                 "cwd": "D:/ProgramData/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin"
