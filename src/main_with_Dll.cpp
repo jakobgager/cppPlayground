@@ -61,13 +61,13 @@ int main(int argc, char* argv[])
 
     // load the library -------------------------------------------------
     #ifdef WIN32
-        string nameOfLibToLoad("../libini.dll");
+        string nameOfLibToLoad("libinih.dll");
         lib_handle = LoadLibrary(TEXT(nameOfLibToLoad.c_str()));
         if (!lib_handle) {
-            cerr << "Cannot load library: " << TEXT(nameOfDllToLoad.c_str()) << endl;
+            cerr << "Cannot load library: " << TEXT(nameOfLibToLoad.c_str()) << endl;
         }
     #else
-        string nameOfLibToLoad("../dll/libinih.so");
+        string nameOfLibToLoad("libinih.so");
         lib_handle = dlopen(nameOfLibToLoad.c_str(), RTLD_LAZY);
         if (!lib_handle) {
             cerr << "Cannot load library: " << dlerror() << endl;
@@ -76,7 +76,11 @@ int main(int argc, char* argv[])
 
     // load the symbols -------------------------------------------------
     #ifdef WIN32
+        // silence casting error (see e.g. https://github.com/sumogr/monero/commit/13e1668bb4334af2bc314444b7ea738db084ce62)
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wcast-function-type"
         func_t readIni = (func_t) GetProcAddress(lib_handle, "readIni");
+        #pragma GCC diagnostic pop
         if (!readIni) {
             cerr << "Cannot load symbol readIni: " << GetLastError() << endl;
         }

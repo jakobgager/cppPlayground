@@ -21,15 +21,15 @@ add_executable(cppPlayground
 
 # Create shared Library (dll, so)
 add_library(inihandler SHARED src/inihandler.cpp lib/inih/ini.c lib/inih/cpp/INIReader.cpp)
-set_target_properties(inihandler PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../dll)
+#set_target_properties(inihandler PROPERTIES LIBRARY_OUTPUT_DIRECTORY ../dll)
 set_target_properties(inihandler PROPERTIES OUTPUT_NAME inih)
 set_target_properties(inihandler PROPERTIES VERSION "1.0")
-add_custom_command(TARGET inihandler PRE_BUILD COMMAND mkdir ../dll)
+#add_custom_command(TARGET inihandler PRE_BUILD COMMAND mkdir ../dll)
 if (UNIX)
-add_custom_command(TARGET inihandler POST_BUILD
+    add_custom_command(TARGET inihandler POST_BUILD
                    COMMAND ln -sf libinih.so.1.0 libinih.so.1
-                   COMMAND ln -sf libinih.so.1.0 libinih.so
-                   WORKING_DIRECTORY ../dll)
+                   COMMAND ln -sf libinih.so.1.0 libinih.so)
+    #              WORKING_DIRECTORY ../dll)
 endif()
 
 # compile with linked shared lib
@@ -39,5 +39,7 @@ target_link_libraries(cppPlaygroundDll inihandler)
 
 # compile with runtime shared lib
 add_executable(cppPlaygroundDll_Dyn src/main_with_Dll.cpp)
-target_link_libraries(cppPlaygroundDll_Dyn dl)
-target_compile_options(cppPlaygroundDll_Dyn PRIVATE -rdynamic)
+if (UNIX)
+    target_link_libraries(cppPlaygroundDll_Dyn dl)
+    target_compile_options(cppPlaygroundDll_Dyn PRIVATE -rdynamic)
+endif()
